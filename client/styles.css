@@ -1,0 +1,252 @@
+/* Number Merge Puzzle — original design.
+   Palette: deep teal / slate background, warm amber accent,
+   soft cream tiles that warm up as values grow. */
+
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #0f2e2b;
+  --bg-soft: #173f3a;
+  --panel: #1e4a44;
+  --text: #f2ede4;
+  --muted: #a8c3bd;
+  --accent: #f2a541;
+  --accent-dark: #d98a1f;
+  --cell-empty: #2a5a53;
+  --grid-bg: #123330;
+  --radius: 12px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  width: 100%;
+  max-width: 480px;
+  padding: 16px 16px 32px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.7rem, 8vw, 2.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.score-area {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.score-box {
+  background: var(--panel);
+  border-radius: 10px;
+  padding: 8px 12px;
+  min-width: 72px;
+  text-align: center;
+}
+
+.score-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+
+.score-value {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.tagline {
+  color: var(--muted);
+  margin: 12px 0 14px;
+  font-size: 0.95rem;
+}
+
+.tagline strong { color: var(--accent); }
+
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.moves { color: var(--muted); font-size: 0.95rem; }
+.moves strong { color: var(--text); }
+
+.buttons { display: flex; gap: 8px; }
+
+.btn {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 48px;
+  transition: transform 0.08s ease, background 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:active { transform: scale(0.96); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--accent);
+  color: #241503;
+}
+.btn-primary:hover { background: var(--accent-dark); }
+
+.btn-secondary {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid #35655e;
+}
+
+/* --- Grid --- */
+.grid-wrap {
+  position: relative;
+}
+
+.grid {
+  background: var(--grid-bg);
+  border-radius: var(--radius);
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cell {
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  background: var(--cell-empty);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: clamp(1.25rem, 7vw, 2rem);
+  color: #123330;
+  transition: background 0.15s ease, transform 0.15s ease, color 0.15s ease;
+}
+
+.cell.tile { animation: pop 0.18s ease; }
+
+@keyframes pop {
+  0% { transform: scale(0.85); }
+  60% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+/* Distinct warm tile colours per value — original palette. */
+.tile-2    { background: #f7ead1; color: #3d2c12; }
+.tile-4    { background: #f3d9a4; color: #3d2c12; }
+.tile-8    { background: #f2a541; color: #fff7e8; }
+.tile-16   { background: #ef8f3c; color: #fff7e8; }
+.tile-32   { background: #e76f51; color: #fff7e8; }
+.tile-64   { background: #d64545; color: #fff7e8; }
+.tile-128  { background: #c0392b; color: #ffe9e9; font-size: clamp(1.1rem, 6vw, 1.7rem); }
+.tile-256  { background: #8e44ad; color: #f5e8ff; font-size: clamp(1.1rem, 6vw, 1.7rem); }
+.tile-512  { background: #5b4bc4; color: #e8e6ff; font-size: clamp(1.1rem, 6vw, 1.7rem); }
+.tile-1024 { background: #2a7f62; color: #e6fff4; font-size: clamp(0.95rem, 5vw, 1.4rem); }
+.tile-2048 { background: #f2c531; color: #241503; font-size: clamp(0.95rem, 5vw, 1.4rem); box-shadow: 0 0 18px rgba(242, 197, 49, 0.55); }
+.tile-super { background: #1b1b2f; color: #ffd166; font-size: clamp(0.85rem, 4.5vw, 1.2rem); }
+
+/* --- Overlays --- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 32, 29, 0.82);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 5;
+}
+
+.overlay.hidden { display: none; }
+
+.overlay-card {
+  background: var(--bg-soft);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  text-align: center;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.overlay-card h2 { margin: 0 0 8px; font-size: 1.6rem; }
+.overlay-card p { margin: 6px 0; color: var(--muted); }
+.overlay-card .overlay-score { color: var(--text); font-size: 1.1rem; }
+.overlay-card .btn { display: block; width: 100%; margin-top: 10px; }
+
+/* --- On-screen arrows --- */
+.dpad {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
+  grid-template-rows: repeat(2, 64px);
+  gap: 8px;
+  justify-content: center;
+}
+
+.dpad-btn {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid #35655e;
+  border-radius: 12px;
+  font-size: 1.4rem;
+  min-height: 64px;
+  min-width: 64px;
+  cursor: pointer;
+  transition: transform 0.08s ease, background 0.15s ease;
+}
+.dpad-btn:active { transform: scale(0.92); background: var(--accent); color: #241503; }
+
+.dpad-btn[data-direction="up"]    { grid-column: 2; grid-row: 1; }
+.dpad-btn[data-direction="left"]  { grid-column: 1; grid-row: 2; }
+.dpad-btn[data-direction="down"]  { grid-column: 2; grid-row: 2; }
+.dpad-btn[data-direction="right"] { grid-column: 3; grid-row: 2; }
+
+.hint {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 16px 0 0;
+}
+
+@media (min-width: 520px) {
+  .app { padding-top: 28px; }
+}

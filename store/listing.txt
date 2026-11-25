@@ -1,0 +1,22 @@
+App title:
+Number Merge Puzzle
+
+Short description (under 80 characters):
+Slide, merge and reach 2048 in this fun number puzzle!
+
+Full description:
+Number Merge Puzzle is a fun and simple number puzzle game. Slide the tiles on a 4x4 board and merge equal numbers. Two 2s make a 4. Two 4s make an 8. Keep merging and reach the 2048 tile. Can you do it?
+
+The game is easy to learn and hard to stop. Every move brings a new tile. Every merge brings more points. Plan your moves, keep the board open, and chase your best score.
+
+Features:
+- Classic 2048-style merging on a 4x4 board
+- Score and best score, saved on your device
+- Move counter, so you can track every game
+- One-step undo, to fix a wrong move
+- New Game button, to start fresh at any time
+- Win at 2048, with a clear game-over screen
+
+Controls are simple. Swipe on the board, use the arrow keys, or tap the on-screen arrow buttons. The game works on phones and tablets.
+
+Play offline, anywhere, at any time. No internet is needed to play. The game is free to play. Download Number Merge Puzzle now and see how far you can merge!

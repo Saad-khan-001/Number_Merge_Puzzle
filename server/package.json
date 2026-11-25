@@ -1,0 +1,1 @@
+{"dependencies":{"bcryptjs":"^3.0.2","better-sqlite3":"^13.0.1","cors":"^2.8.5","express":"^4.21.2","express-rate-limit":"^8.2.1","helmet":"^8.1.0","jsonwebtoken":"^9.0.2"},"description":"Server for the number-merge puzzle game","main":"server.js","name":"number-merge-puzzle-server","private":true,"scripts":{"start":"node server.js"},"version":"1.0.0"}

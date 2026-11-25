@@ -1,0 +1,1 @@
+{"description":"Number merge puzzle game","name":"number-merge-puzzle","private":true,"scripts":{"test":"node --test client/tests/game-logic.test.js server/tests/api.test.js"},"version":"1.0.0"}
